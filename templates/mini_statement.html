@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Statement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Mini Statement</h1>
+    <p>Current Balance: ₹{{ balance }}</p>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Type</th>
+            <th>Amount (₹)</th>
+            <th>Balance After (₹)</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.type }}</td>
+            <td>{{ t.amount }}</td>
+            <td>{{ t.balance_after }}</td>
+            <td>{{ t.timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

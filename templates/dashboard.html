@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ session['user_name'] }}</h1>
+    <p>Current Balance: ₹{{ balance }}</p>
+
+    <ul>
+        <li><a href="{{ url_for('deposit') }}">Deposit Money</a></li>
+        <li><a href="{{ url_for('withdraw') }}">Withdraw Money</a></li>
+        <li><a href="{{ url_for('mini_statement') }}">Mini Statement</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</body>
+</html>

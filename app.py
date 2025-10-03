@@ -14,7 +14,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        acc_no = request.form['account_number']
+        acc_no = request.form['acc_no']
         pin = request.form['pin']
         acc = get_account(acc_no)
         if not acc:  # add your PIN check here

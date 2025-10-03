@@ -1,73 +1,87 @@
+import os
+
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from accounts_helper import get_account, save_account
-import os
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev_secret'
 
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        acc_no = request.form['acc_no']
+        acc_no = request.form['account_number']
         pin = request.form['pin']
-
-        account = get_account(acc_no)
-
-        if account and account['pin'] == pin:
-            session['user'] = acc_no
-            flash("Login successful!")
-            return redirect(url_for('dashboard'))
-        else:
-            flash("Invalid account number or PIN")
+        acc = get_account(acc_no)
+        if not acc:  # add your PIN check here
+            flash('Invalid account or PIN', 'danger')
             return redirect(url_for('login'))
-
+        session['account_id'] = acc_no
+        session['user_name'] = acc['name']
+        return redirect(url_for('dashboard'))
     return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():
-    if 'user' not in session:
+    if 'account_id' not in session:
         return redirect(url_for('login'))
-    account = get_account(session['user'])
+    account = get_account(session['account_id'])
     return render_template('dashboard.html', account=account)
+
+
 @app.route('/deposit', methods=['POST'])
 def deposit():
-    if 'user' not in session:
+    if 'account_id' not in session:
         return redirect(url_for('login'))
+    
     amount = float(request.form['amount'])
-    account = get_account(session['user'])
+    acc_no = session['account_id']
+    account = get_account(acc_no)
+    
     account['balance'] += amount
-    save_account(account)  # function to save updated account
+    save_account(account)
+    
     flash(f"₹{amount} deposited successfully!")
     return redirect(url_for('dashboard'))
 
 @app.route('/withdraw', methods=['POST'])
 def withdraw():
-    if 'user' not in session:
+    if 'account_id' not in session:
         return redirect(url_for('login'))
+    
     amount = float(request.form['amount'])
-    account = get_account(session['user'])
+    acc_no = session['account_id']
+    account = get_account(acc_no)
+    
     if amount > account['balance']:
         flash("Insufficient balance!")
     else:
         account['balance'] -= amount
         save_account(account)
         flash(f"₹{amount} withdrawn successfully!")
+    
     return redirect(url_for('dashboard'))
+
 
 
 @app.route('/transfer', methods=['POST'])
 def transfer():
-    if 'user' not in session:
+    if 'account_id' not in session:
         return redirect(url_for('login'))
 
-    to_acc = request.form['to_account']
+    to_acc_no = request.form['to_account']
     amount = float(request.form['amount'])
-
-    sender = get_account(session['user'])
-    receiver = get_account(to_acc)
+    
+    sender_acc_no = session['account_id']
+    sender = get_account(sender_acc_no)
+    receiver = get_account(to_acc_no)
 
     if receiver is None:
-        flash("Target account not found!")  # ⚠ shows if acc_no wrong
+        flash("Target account not found!")
     elif amount > sender['balance']:
         flash("Insufficient balance!")
     else:
@@ -75,22 +89,21 @@ def transfer():
         receiver['balance'] += amount
         save_account(sender)
         save_account(receiver)
-        flash(f"₹{amount} transferred to {to_acc} successfully!")
-
+        flash(f"₹{amount} transferred to account {to_acc_no} successfully!")
+    
     return redirect(url_for('dashboard'))
-
 
 @app.route("/logout")
 def logout():
-    session.pop("acc_no", None)
+    session.pop("account_id", None)
+    session.pop("user_name", None)
     return redirect(url_for("login"))
 
-
-
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Railway sets PORT automatically
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+
 
 
 

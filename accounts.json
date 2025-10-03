@@ -1,0 +1,72 @@
+[
+    {
+        "acc_no": "1000",
+        "name": "Alice",
+        "balance": 5000,
+        "pin": "1000",
+        "transactions": []
+    },
+    {
+        "acc_no": "1001",
+        "name": "Bob",
+        "balance": 5000.0,
+        "pin": "1001",
+        "transactions": []
+    },
+    {
+        "acc_no": "1002",
+        "name": "Charlie",
+        "balance": 7000,
+        "pin": "1002",
+        "transactions": []
+    },
+    {
+        "acc_no": "1003",
+        "name": "David",
+        "balance": 8000,
+        "pin": "1003",
+        "transactions": []
+    },
+    {
+        "acc_no": "1004",
+        "name": "Eva",
+        "balance": 9000,
+        "pin": "1004",
+        "transactions": []
+    },
+    {
+        "acc_no": "1005",
+        "name": "Frank",
+        "balance": 10000,
+        "pin": "1005",
+        "transactions": []
+    },
+    {
+        "acc_no": "1006",
+        "name": "Grace",
+        "balance": 11000,
+        "pin": "1006",
+        "transactions": []
+    },
+    {
+        "acc_no": "1007",
+        "name": "Hannah",
+        "balance": 12000,
+        "pin": "1007",
+        "transactions": []
+    },
+    {
+        "acc_no": "1008",
+        "name": "Ian",
+        "balance": 13000,
+        "pin": "1008",
+        "transactions": []
+    },
+    {
+        "acc_no": "1009",
+        "name": "Sonia",
+        "balance": 10500.0,
+        "pin": "9012",
+        "transactions": []
+    }
+]

@@ -1,18 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome, {{ session['user_name'] }}</h1>
-    <p>Current Balance: ₹{{ balance }}</p>
+    <h2>Welcome, {{ account.name }}</h2>
+    <div class="balance">Balance: ₹{{ account.balance }}</div>
 
-    <ul>
-        <li><a href="{{ url_for('deposit') }}">Deposit Money</a></li>
-        <li><a href="{{ url_for('withdraw') }}">Withdraw Money</a></li>
-        <li><a href="{{ url_for('mini_statement') }}">Mini Statement</a></li>
-        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    </ul>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Deposit Form -->
+    <form action="{{ url_for('deposit') }}" method="POST">
+        <h3>Deposit</h3>
+        <input type="number" name="amount" placeholder="Enter amount" required>
+        <button type="submit">Deposit</button>
+    </form>
+
+    <!-- Withdraw Form -->
+    <form action="{{ url_for('withdraw') }}" method="POST">
+        <h3>Withdraw</h3>
+        <input type="number" name="amount" placeholder="Enter amount" required>
+        <button type="submit">Withdraw</button>
+    </form>
+
+    <!-- Transfer Form -->
+    <form action="{{ url_for('transfer') }}" method="POST">
+        <h3>Transfer</h3>
+        <input type="text" name="to_account" placeholder="To account number" required>
+        <input type="number" name="amount" placeholder="Enter amount" required>
+        <button type="submit">Transfer</button>
+    </form>
+
+    <a class="logout" href="{{ url_for('logout') }}">Logout</a>
 </body>
 </html>

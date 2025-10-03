@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>ATM Login</h1>
+    <h2>ATM Login</h2>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% with messages = get_flashed_messages() %}
       {% if messages %}
-        {% for category, message in messages %}
-          <p style="color:red;">{{ message }}</p>
+        {% for message in messages %}
+          <div class="flash">{{ message }}</div>
         {% endfor %}
       {% endif %}
     {% endwith %}
 
-    <form method="POST">
-        <label>Account Number:</label><br>
-        <input type="text" name="account_number" required><br><br>
-        <label>PIN:</label><br>
-        <input type="password" name="pin" required><br><br>
+    <form action="{{ url_for('login') }}" method="POST">
+        <input type="text" name="acc_no" placeholder="Account Number" required>
+        <input type="password" name="pin" placeholder="PIN" required>
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Create one</a></p>
-
 </body>
 </html>

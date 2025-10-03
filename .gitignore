@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+instance/
+.env
+todos.json   # optional if you don't want to push local data
